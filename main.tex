@@ -168,7 +168,7 @@ Digital Signal Processing
 % was not built to handle multiple paragraphs
 %
 
-\author{ Pranav B$^{*}$ %<-this  stops a space
+\author{ Pranav B %<-this  stops a space
 % <-this % stops a space
 %\thanks{J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
 %\thanks{Manuscript received April 19, 2005; revised January 11, 2007.}}
@@ -316,12 +316,13 @@ Sketch $y(n)$.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/3/xnyn.py
 \end{lstlisting}
+Use the following command in terminal to run code
 \begin{lstlisting}
 python3 xnyn.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/3/xnyn.pdf}
+\includegraphics[width=\columnwidth]{xnyn.pdf}
 \end{center}
 \captionof{figure}{}
 \label{fig:xnyn}	
@@ -410,7 +411,7 @@ U(z) &= \sum _{n= 0}^{\infty}z^{-n}
 \\
 &=\frac{1}{1-z^{-1}}, \quad \abs{z} > 1
 \end{align}
-using the fomula for the sum of an infinite geometric progression.
+using the formula for the sum of an infinite geometric progression.
 %
 \item Show that 
 \begin{equation}
@@ -423,11 +424,14 @@ a^{n}u(n)=\begin{cases}
 a^{n} & n\geq 0\\
 0 & n <0
 \end{cases}
+\\
 {\mathcal {Z}}\{a^{n}u(n)\}=\sum_{n=-\infty}^{\infty} a^{n}u(n) z^{-n}\\
-=\sum_{n=0}^{\infty}a^{n}z^{-n}\\
-\text{This \quad is \quad a\quad infinite \quad geometric\quad  series\quad  with\quad  common \quad ratio<1}\\
-=\frac{1}{1-a z^{-1}} (\because \left|\frac{a}{z}\right|<1)
+=\sum_{n=0}^{\infty}a^{n}z^{-n}
 \end{align}
+Using formula of  sum of infinite geometric progression with common ratio$<$1
+\begin{align}
+=\frac{1}{1-a z^{-1}} \left(\because \left|\frac{a}{z}\right|<1\right)
+\end{align} 
 \item 
 Let
 \begin{equation}
@@ -440,12 +444,13 @@ known as the {\em Discrete Time Fourier Transform} (DTFT) of $x(n)$.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/4/dtft.py
 \end{lstlisting}
+Use the following command in the terminal to run the code
 \begin{lstlisting}
 python3 dtft.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{./home/pranav/Desktop/Signal processing/4/dtft}
+\includegraphics[width=\columnwidth]{dtft}
 \caption{$\abs{H\brak{e^{\j\omega}}}$}
 \label{fig:dtft}
 \end{figure}
@@ -476,12 +481,13 @@ using \eqref{eq:anun} and \eqref{eq:z_trans_shift}.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/5/hn.py
 \end{lstlisting}
+Use the following command in the terminal to run the code
 \begin{lstlisting}
 python3 hn.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{./home/pranav/Desktop/Signal processing/5/hn}
+\includegraphics[width=\columnwidth]{hn}
 \caption{$h(n)$ as the inverse of $H(z)$}
 \label{fig:hn}
 \end{figure}
@@ -507,12 +513,13 @@ This is the definition of $h(n)$.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/5/hndef.py
 \end{lstlisting}
+Use the following command in the terminal to run the code
 \begin{lstlisting}
 python3 hndef.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{./home/pranav/Desktop/Signal processing/5/hndef}
+\includegraphics[width=\columnwidth]{hndef}
 \caption{$h(n)$ from the definition}
 \label{fig:hndef}
 \end{figure}
@@ -535,12 +542,13 @@ $y(n)$ in  Fig.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/6/ynconv.py
 \end{lstlisting}
+Use the following command in the terminal to run the code
 \begin{lstlisting}
 python3 ynconv.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{./home/pranav/Desktop/Signal processing/6/ynconv}
+\includegraphics[width=\columnwidth]{ynconv}
 \caption{$y(n)$ from the definition of convolution}
 \label{fig:ynconv}
 \end{figure}
@@ -576,12 +584,13 @@ $y(n)$ in  Fig.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/6/yndft.py
 \end{lstlisting}
+Use the following command in the terminal to run the code
 \begin{lstlisting}
 python3 yndft.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{./home/pranav/Desktop/Signal processing/6/yndft}
+\includegraphics[width=\columnwidth]{yndft}
 \caption{$y(n)$ from the DFT}
 \label{fig:yndft}
 \end{figure}
