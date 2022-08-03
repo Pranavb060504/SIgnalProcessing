@@ -496,7 +496,26 @@ python3 hn.py
 \begin{equation}
 \sum_{n=-\infty}^{\infty}h(n) < \infty
 \end{equation}
-Is the system defined by \eqref{eq:iir_filter} stable for the impulse response in \eqref{eq:impulse_resp}?
+Is the system defined by \eqref{eq:iir_filter} stable for the impulse response in \eqref{eq:impulse_resp}?\\
+\solution
+\begin{align}
+&u(n)=\begin{cases}
+1 & n\geq 0\\
+0 & n<0
+\end{cases}\\
+&u(n-2)=\begin{cases}
+1 & n\geq 2\\
+0 & n<2
+\end{cases}\\
+&\therefore h(n)=\begin{cases}
+0 & n<0\\
+\left(\frac{-1}{2}\right)^n & 0 \leq n<2\\
+\left(\frac{-1}{2}\right)^n +\left(\frac{-1}{2}\right)^{(n-2)} & n \geq 2
+\end{cases}\\
+&\therefore \sum_{n=-\infty}^{\infty}h(n)=0+1+\frac{-1}{2}+\sum_{n=2}^{\infty}\left[\left(\frac{-1}{2}\right)^n +\left(\frac{-1}{2}\right)^{(n-2)}\right]\\
+&=\frac{1}{2}+\frac{5}{4}*\left(\frac{2}{3}\right)=\frac{4}{3}<\infty\\
+\end{align}
+$\therefore$ system defined is stable
 %
 \item 
 Compute and sketch $h(n)$ using 
@@ -528,7 +547,7 @@ python3 hndef.py
 %
 \begin{equation}
 \label{eq:convolution}
-y(n) = x(n)*h(n) = \sum_{n=-\infty}^{\infty}x(k)h(n-k)
+y(n) = x(n)*h(n) = \sum_{k=-\infty}^{\infty}x(k)h(n-k)
 \end{equation}
 %
 Comment. The operation in \eqref{eq:convolution} is known as
@@ -555,10 +574,19 @@ python3 ynconv.py
 
 \item Show that
 \begin{equation}
-y(n) =  \sum_{n=-\infty}^{\infty}x(n-k)h(k)
-\end{equation}
+y(n) =  \sum_{k=-\infty}^{\infty}x(n-k)h(k)
+\end{equation}\\
+\solution
+wkt
+\begin{align}
+y(n) = x(n)*h(n) = \sum_{k=-\infty}^{\infty}x(k)h(n-k)
+\end{align} 
+Replacing $k$ with $n-k$
+\begin{align}
+=\sum_{n-k=-\infty}^{\infty}x(n-k)h(k)
+\therefore y(n)=\sum_{k=-\infty}^{\infty}x(n-k)h(k)
+\end{align}
 \end{enumerate}
-
 %
 \section{DFT and FFT}
 \begin{enumerate}[label=\thesection.\arabic*]
@@ -596,7 +624,8 @@ python3 yndft.py
 \end{figure}
 
 \item Repeat the previous exercise by computing $X(k), H(k)$ and $y(n)$ through FFT and 
-IFFT.
+IFFT.\\
+\solution 
 \item Wherever possible, express all the above equations as matrix equations.
 \end{enumerate}
 %
