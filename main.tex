@@ -312,7 +312,16 @@ y(n) + \frac{1}{2}y(n-1) = x(n) + x(n-2),
 \end{multline}
 Sketch $y(n)$.
 \\
-\solution The following code yields Fig. \ref{fig:xnyn}.
+\solution
+First run the following c code to generate data
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/3/xy.c
+\end{lstlisting}
+Use the following command in terminal to run code
+\begin{lstlisting}
+cc -lm xy.c
+\end{lstlisting}
+Then run the below python code which yields Fig. \ref{fig:xnyn}.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/3/xnyn.py
 \end{lstlisting}
@@ -554,7 +563,24 @@ Comment. The operation in \eqref{eq:convolution} is known as
 {\em convolution}.
 %
 \\
-\solution The following code plots Fig. \ref{fig:ynconv}. Note that this is the same as 
+\solution
+ $X=\begin{bmatrix}
+1 \\2 \\3 \\4 \\2 \\1
+\end{bmatrix} $\\
+for some N,\\
+$H=\begin{bmatrix}
+h(0) & h(1) & h(2) & \cdots & h(N-1)
+\end{bmatrix}_{(1 \times N)}$\\
+Toeplitz matix for \\
+$X=\begin{bmatrix}
+1 & 2 & 3 & 4 & 2 & 1 & \cdots & 0 & 0& 0\\
+0 & 1 & 2 & 3 & 4 & 2 & 1 & \cdots &0 & 0\\
+0 & 0 & 1 & 2 & 3 & 4 & 2 & 1 & \cdots & 0\\
+\vdots & \ddots & \ddots & \ddots & \ddots & \ddots & \ddots  & \ddots  & \ddots & 0\\
+0 & 0 & 0 &\cdots & 1 & 2 & 3 & 4 & 2 & 1
+\end{bmatrix}$
+$\therefore Y^{T}= X*H$\\
+ The following code plots Fig. \ref{fig:ynconv}. Note that this is the same as 
 $y(n)$ in  Fig. 
 \ref{fig:xnyn}. 
 %
@@ -595,11 +621,28 @@ Compute
 \begin{equation}
 X(k) \define \sum _{n=0}^{N-1}x(n) e^{-\j2\pi kn/N}, \quad k = 0,1,\dots, N-1
 \end{equation}
-and $H(k)$ using $h(n)$.
+\label{eq:eq6.2}
+and $H(k)$ using $h(n)$.\\
+\solution Run the following code to compute $X(k)$,$H(k)$.
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/6/6_1.py
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+python3 6_1.py
+\end{lstlisting}
 \item Compute 
 \begin{equation}
 Y(k) = X(k)H(k)
 \end{equation}
+\solution Run the following code to compute $Y(k)$.
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/6/6_2.py
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+python3 6_2.py
+\end{lstlisting}
 \item Compute
 \begin{equation}
  y\brak{n}={\frac {1}{N}}\sum _{k=0}^{N-1}Y\brak{k}\cdot e^{\j 2\pi kn/N},\quad n = 0,1,\dots, N-1
@@ -622,11 +665,40 @@ python3 yndft.py
 \caption{$y(n)$ from the DFT}
 \label{fig:yndft}
 \end{figure}
-
 \item Repeat the previous exercise by computing $X(k), H(k)$ and $y(n)$ through FFT and 
 IFFT.\\
 \solution 
+Run the following code to generate the plot below
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/6/xk.py
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+python3 xk.py
+\end{lstlisting}
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\columnwidth]{fft_ifft}
+\caption{IFFT}
+\label{fig:fft_ifft}
+\end{figure}
 \item Wherever possible, express all the above equations as matrix equations.
+\\
+\solution Let $X=\begin{bmatrix}
+1 \\2 \\3 \\4 \\2 \\1 \\ \vdots \\0
+\end{bmatrix}_{(N-1 \times 1)} $ and 
+\\$J=\begin{bmatrix}
+0\\ e^{-2\pi j(1)k/N} \\ e^{-2\pi j(2)k/N}\\ e^{-2\pi j(3)k/N}\\ \vdots \\ e^{-2\pi j(N-1)k/N}
+\end{bmatrix}_{(N-1 \times 1)}$\\
+$\therefore X(k)=X^{	T}J$\\
+From (5.7) $H=\begin{bmatrix}
+h(0) \\ h(1) \\h(2) \\ \vdots \\ h(N-1)
+\end{bmatrix}_{(N-1 \times 1)}$\\
+$\therefore H(k)=H^{T} J$\\
+$Y=\begin{bmatrix}
+H(0)X(0) \\ H(1)X(1) \\ \vdots \\ H(N-1)X(N-1)
+\end{bmatrix}_{(N-1 \times 1)}$\\
+$\therefore y(n)=Y^{T}J$
 \end{enumerate}
 %
 \section{Exercises}
@@ -645,7 +717,16 @@ in Problem \ref{prob:output} is executed through the following difference equati
 \end{equation}
 %
 where the input signal is $x(n)$ and the output signal is $y(n)$ with initial values all 0. Replace
-\textbf{signal.filtfilt} with your own routine and verify.
+\textbf{signal.filtfilt} with your own routine and verify.\\
+\solution
+Run the following code 
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/7/7_1.py
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+python3 7_1.py
+\end{lstlisting}
 %
 \item Repeat all the exercises in the previous sections for the above $a$ and $b$.
 
@@ -657,7 +738,7 @@ Sampling frequency(fs)=44.1kHZ.
 What is type, order and  cutoff-frequency of the above butterworth filter
 \\
 \solution
-The given butterworth filter is low pass with order=2 and cutoff-frequency=4kHz.
+The given butterworth filter is low pass with order=4 and cutoff-frequency=4kHz.
 %
 \item
 Modifying the code with different input parameters and to get the best possible output.
