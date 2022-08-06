@@ -37,5 +37,4 @@ plt.stem(range(0,N),np.real(H))
 plt.xlabel('$n$')
 plt.ylabel('$H(n)$')
 plt.grid()
-#If using termux
-plt.savefig('../figs/X-H(n).pdf')
+plt.show()
