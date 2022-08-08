@@ -449,7 +449,7 @@ H\brak{e^{\j \omega}} = H\brak{z = e^{\j \omega}}.
 Plot $\abs{H\brak{e^{\j \omega}}}$.  Comment.  $H(e^{\j \omega})$ is
 known as the {\em Discrete Time Fourier Transform} (DTFT) of $x(n)$.
 \\
-\solution The following code plots Fig. \ref{fig:dtft}.
+\solution $|H(e^{i \omega})|$ has a fundamental period of $2 \pi$. The following code plots Fig. \ref{fig:dtft}.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/4/dtft.py
 \end{lstlisting}
@@ -522,7 +522,7 @@ Is the system defined by \eqref{eq:iir_filter} stable for the impulse response i
 \left(\frac{-1}{2}\right)^n +\left(\frac{-1}{2}\right)^{(n-2)} & n \geq 2
 \end{cases}\\
 &\therefore \sum_{n=-\infty}^{\infty}h(n)=0+1+\frac{-1}{2}+\sum_{n=2}^{\infty}\left[\left(\frac{-1}{2}\right)^n +\left(\frac{-1}{2}\right)^{(n-2)}\right]\\
-&=\frac{1}{2}+\frac{5}{4}*\left(\frac{2}{3}\right)=\frac{4}{3}<\infty\\
+&=\frac{1}{2}+\frac{5}{4}\left(\frac{2}{3}\right)=\frac{4}{3}<\infty\\
 \end{align}
 $\therefore$ system defined is stable
 %
