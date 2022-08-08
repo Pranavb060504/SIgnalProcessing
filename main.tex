@@ -450,7 +450,16 @@ H\brak{e^{\j \omega}} = H\brak{z = e^{\j \omega}}.
 Plot $\abs{H\brak{e^{\j \omega}}}$.  Comment.  $H(e^{\j \omega})$ is
 known as the {\em Discrete Time Fourier Transform} (DTFT) of $x(n)$.
 \\
-\solution $|H(e^{i \omega})|$ has a fundamental period of $2 \pi$. The following code plots Fig. \ref{fig:dtft}.
+\solution
+\begin{align}
+		H\brak{e^{\j \omega}} &= \frac{1 + e^{-2\j\omega}}{1 + \frac12 e^{-\j\omega}} \\
+		\implies \abs{H\brak{e^{\j \omega}}} &= \frac{\abs{1 + \cos2\omega - \j\sin2\omega}}{\abs{1 + \frac12 \cos\omega - \frac12 \sin\omega}} \\
+		&= \sqrt{\frac{(1 + \cos2\omega)^2 + (\sin2\omega)^2}{(1 + \frac12 \cos\omega)^2 + (\frac12 \sin\omega)^2}} \\
+		&= \sqrt{\frac{2 + 2\cos2\omega}{\frac54 + \cos\omega}} \\
+		&= \sqrt{\frac{2(2\cos^2\omega)4}{5 + 4\cos\omega} } \\
+		&= \frac{4\abs{\cos\omega}}{\sqrt{5 + 4\cos\omega}}
+	\end{align} 
+The period of numerator is $\pi$  and period of denominator is $2 \pi$,$\therefore$ the period of $|H(e^{i \omega})|$ is LCM($\pi,2 \pi$)=$2\pi$. The following code plots Fig. \ref{fig:dtft}.
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/4/dtft.py
 \end{lstlisting}
