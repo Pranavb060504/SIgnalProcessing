@@ -368,6 +368,7 @@ resulting in \eqref{eq:shift1}. Similarly, it can be shown that
 \label{eq:z_trans_shift}
 	{\mathcal {Z}}\{x(n-k)\} = z^{-k}X(z)
 \end{equation}
+\item Obtain $X(z)$ for $x(n)$ defined in problem 
 ${\mathcal {Z}}\{x(n)\}=1+2z^{-1}+3z^{-2}+4z^{-3}+2z^{-4}+z^{-5}$
 
 \item Find
@@ -473,6 +474,11 @@ python3 dtft.py
 \caption{$\abs{H\brak{e^{\j\omega}}}$}
 \label{fig:dtft}
 \end{figure}
+\item Express $h(n)$ in terms of $H\brak{e^{\j \omega}}$.
+$x(n)=\frac{1}{2 \pi} \int_{-\pi}^{\pi} X(\omega) e^{j \omega n} d \omega$\\
+ \begin{align}
+ =\frac{1}{2 \pi} \int_{-\pi}^{\pi} \frac{1 + e^{-2\j\omega}}{1 + \frac12 e^{-\j\omega}} e^{j \omega n} d\omega\\
+ \end{align}
 \end{enumerate}
 
 \section{Impulse Response}
