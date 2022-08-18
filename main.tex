@@ -11,8 +11,52 @@
 %\usepackage{graphicx}
 %\usepackage{amssymb}
 %\usepackage{relsize}
+\newcommand{\myvec}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
+\newcommand{\mydet}[1]{\ensuremath{\begin{vmatrix}#1\end{vmatrix}}}
 \usepackage[cmex10]{amsmath}
 \usepackage{mathtools}
+\usepackage{polynom}
+\makeatletter
+\def\pld@CF@loop#1+{%
+    \ifx\relax#1\else
+        \begingroup
+          \pld@AccuSetX11%
+          \def\pld@frac{{}{}}\let\pld@symbols\@empty\let\pld@vars\@empty
+          \pld@false
+          #1%
+          \let\pld@temp\@empty
+          \pld@AccuIfOne{}{\pld@AccuGet\pld@temp
+                            \edef\pld@temp{\noexpand\pld@R\pld@temp}}%
+           \pld@if \pld@Extend\pld@temp{\expandafter\pld@F\pld@frac}\fi
+           \expandafter\pld@CF@loop@\pld@symbols\relax\@empty
+           \expandafter\pld@CF@loop@\pld@vars\relax\@empty
+           \ifx\@empty\pld@temp
+               \def\pld@temp{\pld@R11}%
+           \fi
+          \global\let\@gtempa\pld@temp
+        \endgroup
+        \ifx\@empty\@gtempa\else
+            \pld@ExtendPoly\pld@tempoly\@gtempa
+        \fi
+        \expandafter\pld@CF@loop
+    \fi}
+\def\pld@CMAddToTempoly{%
+    \pld@AccuGet\pld@temp\edef\pld@temp{\noexpand\pld@R\pld@temp}%
+    \pld@CondenseMonomials\pld@false\pld@symbols
+    \ifx\pld@symbols\@empty \else
+        \pld@ExtendPoly\pld@temp\pld@symbols
+    \fi
+    \ifx\pld@temp\@empty \else
+        \pld@if
+            \expandafter\pld@IfSum\expandafter{\pld@temp}%
+                {\expandafter\def\expandafter\pld@temp\expandafter
+                    {\expandafter\pld@F\expandafter{\pld@temp}{}}}%
+                {}%
+        \fi
+        \pld@ExtendPoly\pld@tempoly\pld@temp
+        \pld@Extend\pld@tempoly{\pld@monom}%
+    \fi}
+\makeatother
 %\usepackage{amsthm}
 %\interdisplaylinepenalty=2500
 %\savesymbol{iint}
@@ -331,7 +375,7 @@ python3 xnyn.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=\columnwidth]{xnyn.pdf}
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/3/xnyn.pdf}
 \end{center}
 \captionof{figure}{}
 \label{fig:xnyn}	
@@ -470,19 +514,43 @@ python3 dtft.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{dtft}
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/4/dtft}
 \caption{$\abs{H\brak{e^{\j\omega}}}$}
 \label{fig:dtft}
 \end{figure}
-\item Express $h(n)$ in terms of $H\brak{e^{\j \omega}}$.
-$x(n)=\frac{1}{2 \pi} \int_{-\pi}^{\pi} X(\omega) e^{j \omega n} d \omega$\\
+\item Express $h(n)$ in terms of $H\brak{e^{\j \omega}}$.\\
+\solution
+$h(n)=\frac{1}{2 \pi} \int_{-\pi}^{\pi} H(\omega) e^{j \omega n} d \omega$\\
  \begin{align}
  =\frac{1}{2 \pi} \int_{-\pi}^{\pi} \frac{1 + e^{-2\j\omega}}{1 + \frac12 e^{-\j\omega}} e^{j \omega n} d\omega\\
  \end{align}
 \end{enumerate}
-
 \section{Impulse Response}
 \begin{enumerate}[label=\thesection.\arabic*]
+\item Using long division, 
+find
+		\begin{align}
+			h(n), \quad n < 5
+		\end{align}
+		for H(z) in 
+		\eqref{eq:freq_resp}.\\
+\solution  
+	\begin{equation}
+		H(z) = \frac{1 + z^{-2}}{1 + \frac12 z^{-1}}
+	\end{equation}
+	Substitute $z^{-1} = x$
+	
+	\polylongdiv{1+x^2}{1+\frac12 x}
+	
+	\begin{align}
+		&\implies 1 + z^{-2} = \brak{1 + \frac12 z^{-1}}\brak{-4 + 2z^{-1}} + 5 \\
+		&\implies H(z) = -4 + 2z^{-1} + \frac{5}{1 + \frac12 z^{-1}}\\
+		&\frac{1}{1+x}=1-x+x^2-x^3+\cdots\\
+		&\therefore \frac{1}{1+\frac{z^{-1}}{2}}=1-\frac{z^{-1}}{2}+[\frac{z^{-1}}{2}]^{2}+\cdots\\
+		&\therefore =-4+2z^{-1}+5(1-\frac{z^{-1}}{2}+\left[\frac{z^{-1}}{2}\right]^{2}+\cdots)\\
+		&=1-\frac{z^{-1}}{2}+\sum_{n=2}^{\infty}\frac{5}{4} \left(\frac{-1}{2}\right)^{(n-2)}\\
+		\end{align}
+		comparing coefficients we get $h(0)=1$,$h(1)=\frac{-1}{2}$ and $h(n)=\frac{5}{4} \left(\frac{-1}{2}\right)^{(n-2)} \forall n \geq 2$\\
 \item \label{prob:impulse_resp}
 Find an expression for $h(n)$ using $H(z)$, given that 
 %in Problem \ref{eq:ztransab} and \eqref{eq:anun}, given that
@@ -512,10 +580,31 @@ python3 hn.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{hn}
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/5/hn}
 \caption{$h(n)$ as the inverse of $H(z)$}
 \label{fig:hn}
 \end{figure}
+\begin{align}
+		\abs{u(n)} &\le 1 \\
+		\abs{\brak{-\frac12}^n} &\le 1 \\
+		\implies \abs{\brak{-\frac12}^n u(n)} &\le 1
+	\end{align}
+	
+	Similarly,
+	\begin{align}
+		\abs{\brak{-\frac12}^{n-2} u(n-2)} &\le 1 \\
+		\implies h(n) &\le 2
+	\end{align}
+	
+	Therefore $h(n)$ is bounded.
+	Using the ratio test for convergence
+	\begin{align}
+		\lim_{n \to \infty} \abs{\frac{h(n+1)}{h(n)}} &= \lim_{n \to \infty} \abs{\frac{\brak{-\frac12}^{n-1} \brak{\frac14 + 1}}{\brak{-\frac12}^{n-2} \brak{\frac14 + 1}}} \\
+		&= \lim_{n \to \infty} \abs{-\frac12} \\
+		&= \frac{1}{2} < 1
+	\end{align}
+	
+	Therefore, $h(n)$ is convergent.
 %
 \item The system with $h(n)$ is defined to be stable if
 \begin{equation}
@@ -535,7 +624,7 @@ Is the system defined by \eqref{eq:iir_filter} stable for the impulse response i
 &\therefore h(n)=\begin{cases}
 0 & n<0\\
 \left(\frac{-1}{2}\right)^n & 0 \leq n<2\\
-\left(\frac{-1}{2}\right)^n +\left(\frac{-1}{2}\right)^{(n-2)} & n \geq 2
+\left(\frac{-1}{2}\right)^n +\left(\frac{-1}{2}\right)^{(n-2)} ={\left(\frac{-1}{2}\right)}^{(n-2)}\left(\frac{5}{4}\right)& n \geq 2
 \end{cases}\\
 &\therefore \sum_{n=-\infty}^{\infty}h(n)=0+1+\frac{-1}{2}+\sum_{n=2}^{\infty}\left[\left(\frac{-1}{2}\right)^n +\left(\frac{-1}{2}\right)^{(n-2)}\right]\\
 &=\frac{1}{2}+\frac{5}{4}\left(\frac{2}{3}\right)=\frac{4}{3}<\infty\\
@@ -550,7 +639,6 @@ h(n) + \frac{1}{2}h(n-1) = \delta(n) + \delta(n-2),
 \end{equation}
 %
 This is the definition of $h(n)$.
-\\
 \solution The following code plots Fig. \ref{fig:hndef}. Note that this is the same as Fig. 
 \ref{fig:hn}. 
 %
@@ -563,7 +651,7 @@ python3 hndef.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{hndef}
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/5/hndef}
 \caption{$h(n)$ from the definition}
 \label{fig:hndef}
 \end{figure}
@@ -609,7 +697,7 @@ python3 ynconv.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{ynconv}
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/5/ynconv}
 \caption{$y(n)$ from the definition of convolution}
 \label{fig:ynconv}
 \end{figure}
@@ -677,7 +765,7 @@ python3 yndft.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{yndft}
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/6/yndft}
 \caption{$y(n)$ from the DFT}
 \label{fig:yndft}
 \end{figure}
@@ -694,27 +782,70 @@ python3 xk.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{fft_ifft}
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/6/fft_ifft}
 \caption{IFFT}
 \label{fig:fft_ifft}
 \end{figure}
 \item Wherever possible, express all the above equations as matrix equations.
 \\
-\solution Let $X=\begin{bmatrix}
-1 \\2 \\3 \\4 \\2 \\1 \\ \vdots \\0
-\end{bmatrix}_{(N-1 \times 1)} $ and 
-\\$J=\begin{bmatrix}
-0\\ e^{-2\pi j(1)k/N} \\ e^{-2\pi j(2)k/N}\\ e^{-2\pi j(3)k/N}\\ \vdots \\ e^{-2\pi j(N-1)k/N}
-\end{bmatrix}_{(N-1 \times 1)}$\\
-$\therefore X(k)=X^{	T}J$\\
-From (5.7) $H=\begin{bmatrix}
-h(0) \\ h(1) \\h(2) \\ \vdots \\ h(N-1)
-\end{bmatrix}_{(N-1 \times 1)}$\\
-$\therefore H(k)=H^{T} J$\\
-$Y=\begin{bmatrix}
-H(0)X(0) \\ H(1)X(1) \\ \vdots \\ H(N-1)X(N-1)
-\end{bmatrix}_{(N-1 \times 1)}$\\
-$\therefore y(n)=Y^{T}J$
+\solution 
+\begin{align}
+		\vec{x} &= \myvec{x_0 & x_1	 & \cdots & x_{N-1}}^\top \\
+		\vec{h} &= \myvec{x_0 & x_1	 & \cdots & x_{N-1}}^\top \\
+		\vec{y} &= \vec{x} \circledast \vec{h} \\
+		\myvec{y_1 \\ y_2 \\ \vdots \\ y_{2N - 1}} &= \myvec{
+			h_0 & 0 & 0 & \cdots & 0 \\
+			h_1 & h_0 & 0 & \cdots & 0 \\
+			h_2 & h_1 & h_0 & \cdots & 0 \\
+			\vdots & \vdots & \vdots & \ddots & \vdots \\
+			h_{N-1} & h_{N-2} & h_{N-3} & \cdots & h_0 \\
+			0 & h_{N-1} & h_{N-2} & \cdots & h_1 \\
+			0 & 0 & h_{N-1} & \cdots & h_2 \\
+			\vdots & \vdots & \vdots & \ddots & \vdots \\
+			0 & 0 & 0 & \cdots & h_{N-1}
+		}		
+		\myvec{x_1\\x_2\\ \vdots \\x_N}
+	\end{align}
+	
+	The convolution can be written using a Toeplitz matrix. 
+	
+	Consider the DFT matrix
+	\begin{align}
+		\vec{W} = \myvec{
+			1 & 1 & 1 & 1 & \cdots & 1 \\
+			1 & \omega & \omega^2 & \omega^3 & \cdots & \omega^{N-1} \\
+			1 & \omega^2 & \omega^4 & \omega^6 & \cdots & \omega^{2(N-1)} \\
+			1 & \omega^3 & \omega^6 & \omega^9 & \cdots & \omega^{3(N-1)} \\
+			\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\ 
+			1 & \omega^{N-1} & \omega^{2(N-1)} & \omega^{3(N-1)} & \cdots & \omega^{(N-1)(N-1)}
+		}
+	\end{align}
+	
+	where $\omega = e^{-\j 2\pi/N}$ is the $N^{\mathrm{th}}$ root of unity
+	
+	Then the discrete Fourier transforms of $\vec{x}$ and $\vec{h}$ are given by
+	\begin{align}
+		\vec{X} &= \vec{W} \vec{x} \\
+		\vec{H} &= \vec{W} \vec{h}
+	\end{align}
+	
+	$\vec{Y}$ is then given by
+	\begin{equation}
+		\vec{Y} = \vec{X} \circ \vec{H}
+	\end{equation}
+	where $\circ$ denotes the Hadamard product (element-wise multiplication)
+	
+	But $\vec{Y}$ is the discrete Fourier transform of the filter output $\vec{y}$
+	\begin{equation}
+		\vec{Y} = \vec{W} \vec{y}
+	\end{equation}
+	Thus,
+	\begin{align}
+		\vec{W} \vec{y} &= \vec{X} \circ \vec{H} \\
+		\implies \vec{y} &= \vec{W}^{-1} \brak{\vec{X} \circ \vec{H}} \\
+		&= \vec{W}^{-1} \brak{\vec{W} \vec{x} \circ \vec{W} \vec{h}}
+	\end{align}
+	This is the inverse discrete Fourier transform of $\vec{Y}$
 \end{enumerate}
 %
 \section{Exercises}
