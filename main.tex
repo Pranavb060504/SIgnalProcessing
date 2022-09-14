@@ -111,12 +111,8 @@ frame=single,
 breaklines=true,
 columns=fullflexible
 }
-
-
-
 \begin{document}
 %
-
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{problem}{Problem}
@@ -811,7 +807,7 @@ python3 xk.py
 	
 	Consider the DFT matrix
 	\begin{align}
-		\vec{W} = \myvec{
+		\mathbf{W} = \myvec{
 			1 & 1 & 1 & 1 & \cdots & 1 \\
 			1 & \omega & \omega^2 & \omega^3 & \cdots & \omega^{N-1} \\
 			1 & \omega^2 & \omega^4 & \omega^6 & \cdots & \omega^{2(N-1)} \\
@@ -820,15 +816,12 @@ python3 xk.py
 			1 & \omega^{N-1} & \omega^{2(N-1)} & \omega^{3(N-1)} & \cdots & \omega^{(N-1)(N-1)}
 		}
 	\end{align}
-	
-	where $\omega = e^{-\j 2\pi/N}$ is the $N^{\mathrm{th}}$ root of unity
-	
+	where $\omega = e^{-\j 2\pi/N}$ is the $N^{\mathrm{th}}$ root of unity	
 	Then the discrete Fourier transforms of $\vec{x}$ and $\vec{h}$ are given by
 	\begin{align}
-		\vec{X} &= \vec{W} \vec{x} \\
-		\vec{H} &= \vec{W} \vec{h}
+		\vec{X} &= \mathbf{W} \vec{x} \\
+		\vec{H} &= \mathbf{W} \vec{h}
 	\end{align}
-	
 	$\vec{Y}$ is then given by
 	\begin{equation}
 		\vec{Y} = \vec{X} \circ \vec{H}
@@ -837,17 +830,188 @@ python3 xk.py
 	
 	But $\vec{Y}$ is the discrete Fourier transform of the filter output $\vec{y}$
 	\begin{equation}
-		\vec{Y} = \vec{W} \vec{y}
+		\vec{Y} = \mathbf{W} \vec{y}
 	\end{equation}
 	Thus,
 	\begin{align}
-		\vec{W} \vec{y} &= \vec{X} \circ \vec{H} \\
-		\implies \vec{y} &= \vec{W}^{-1} \brak{\vec{X} \circ \vec{H}} \\
-		&= \vec{W}^{-1} \brak{\vec{W} \vec{x} \circ \vec{W} \vec{h}}
+		\mathbf{W} \vec{y} &= \vec{X} \circ \vec{H} \\
+		\implies \vec{y} &= \mathbf{W}^{-1} \brak{\vec{X} \circ \vec{H}} \\
+		&= \mathbf{W}^{-1} \brak{\mathbf{W} \vec{x} \circ \mathbf{W} \vec{h}}
 	\end{align}
 	This is the inverse discrete Fourier transform of $\vec{Y}$
 \end{enumerate}
 %
+\section{FFT}
+ \subsection{Definitions}
+\begin{enumerate}[label=\arabic*.,ref=\thesection.\theenumi]
+\numberwithin{equation}{section}
+    \item The DFT of $x(n)$ is given by
+    \begin{align}
+        X(k) \triangleq \sum_{n=0}^{N-1} x(n) e^{-j 2 \pi k n / N}, \quad k=0,1, \ldots, N-1
+    \end{align}
+\item Let 
+	\begin{align}
+W_{N} = e^{-j2\pi/N} 
+	\end{align}
+		Then the $N$-point {\em DFT matrix} is defined as 
+	\begin{align}
+		\vec{F}_{N} = \sbrak{W_{N}^{mn}}
+	\end{align}
+	where $W_{N}^{mn}$ are the elements of $\vec{F}_{N}$.
+\item Let 
+	\begin{align}
+		\vec{I}_4 = \myvec{\vec{e}_4^{1} &\vec{e}_4^{2} &\vec{e}_4^{3} &\vec{e}_4^{4} }
+	\end{align}
+		be the $4\times 4$ identity matrix.  Then the 4 point {\em DFT permutation matrix} is defined as 
+	\begin{align}
+		\vec{P}_4 = \myvec{\vec{e}_4^{1} &\vec{e}_4^{3} &\vec{e}_4^{2} &\vec{e}_4^{4} }
+	\end{align}
+\item The 4 point {\em DFT diagonal matrix} is defined as 
+	\begin{align}
+		\vec{D}_4 = diag\myvec{W_{N}^{0} & W_{N}^{1} & W_{N}^{2} & W_{N}^{3}}
+	\end{align}
+ \end{enumerate}
+ \subsection{Problems}
+\begin{enumerate}[label=\arabic*.,ref=\thesection.\theenumi]
+\numberwithin{equation}{section}
+\item Show that 
+\begin{equation}
+    W_{N}^{2}=W_{N/2}
+\end{equation}
+\solution 
+\begin{align}
+W_{N}^{2}=e^{-j4\pi/N}\\
+=e^{-j\pi/ (\frac{N}{2})}\\
+=W_{N/2}
+\end{align}
+    \item Find $\vec{P}_6$.
+    \item Find $\vec{D}_3$.
+    \item Show that 
+\begin{equation}
+	\vec{F}_{6}=
+\begin{bmatrix}
+	\vec{I}_{3} & \vec{D}_{3} \\
+\vec{I}_{3} & -\vec{D}_{3}
+\end{bmatrix}
+\begin{bmatrix}
+\vec{F}_{3} & 0 \\
+0 & \vec{F}_{3}
+\end{bmatrix}
+\vec{P}_{3}
+\end{equation}
+\item Show that 
+\begin{equation}
+\vec{F}_{N}=
+\begin{bmatrix}
+\vec{I}_{N/2} & \vec{D}_{N/2} \\
+\vec{I}_{N/2} & -\vec{D}_{N/2}
+\end{bmatrix}
+\begin{bmatrix}
+\vec{F}_{N/2} & 0 \\
+0 & \vec{F}_{N/2}
+\end{bmatrix}
+\vec{P}_{N}
+\end{equation}
+\item Find 
+    \begin{align}
+	     \vec{P}_6 \vec{x}
+    \end{align}
+\item Show that 
+    \begin{align}
+	    \vec{X} = \vec{F}_N \vec{x}
+	    \label{eq:dft-mat-def}
+    \end{align}
+		where $\vec{x}, \vec{X}$ are the vector representations of $x(n), X(k)$ respectively.
+	\item 
+Let 
+\begin{equation}
+	\myvec{
+X_{1}(0) \\ 
+X_{1}(1) \\ 
+X_{1}(2) 
+	}
+= F_{3}
+	\myvec{
+x(0) \\ 
+x(2) \\ 
+x(4) 
+	}
+\end{equation}
+\begin{equation}
+	\myvec{
+X_{2}(0) \\ 
+X_{2}(1) \\ 
+X_{2}(2) 
+	}
+= F_{3}
+	\myvec{
+x(1) \\ 
+x(3) \\ 
+x(5) 
+	}
+\end{equation}
+Show that 
+\begin{equation}
+	\myvec{
+X(0) \\ 
+X(1) \\ 
+X(2)  
+	}
+=
+	\myvec{
+X_{1}(0) \\ 
+X_{1}(1)\\ 
+X_{1}(2)
+	}
++
+	\myvec{
+W^{0}_{6} & 0 & 0\\
+0 & W^{1}_{6} & 0\\
+0 & 0 & W^{2}_{6}\\
+	}
+	\myvec{
+X_{2}(0) \\ 
+X_{2}(1) \\ 
+X_{2}(2)
+	}
+\end{equation}
+\begin{equation}
+	\myvec{
+X(3) \\ 
+X(4) \\ 
+X(5) 
+	}
+=
+	\myvec{
+X_{1}(0) \\ 
+X_{1}(1)\\ 
+X_{1}(2)
+	}
+-
+	\myvec{
+W^{0}_{6} & 0 & 0\\
+0 & W^{1}_{6} & 0\\
+0 & 0 & W^{2}_{6}
+	}
+	\myvec{
+X_{2}(0) \\ 
+X_{2}(1) \\ 
+X_{2}(2)
+	}
+	    \label{eq:fft-mat-def}
+\end{equation}
+\item For 
+    \begin{align}
+	    \vec{x} = \myvec{1\\2\\3\\4\\2\\1}
+        \label{eq:equation1}
+    \end{align}
+    compte the DFT using 
+	    \eqref{eq:dft-mat-def}
+    \item Repeat the above exercise using
+	    \eqref{eq:fft-mat-def}
+\item Write a C program to compute the 8-point FFT. 
+ \end{enumerate}
+ %
 \section{Exercises}
 
 Answer the following questions by looking at the python code in Problem \ref{prob:output}.
@@ -866,6 +1030,12 @@ in Problem \ref{prob:output} is executed through the following difference equati
 where the input signal is $x(n)$ and the output signal is $y(n)$ with initial values all 0. Replace
 \textbf{signal.filtfilt} with your own routine and verify.\\
 \solution
+On taking the $Z$-transform on both sides of the difference equation
+	\begin{align}
+		\sum _{m=0}^{M}a\brak{m} z^{-m} Y(z) &= \sum _{k=0}^{N}b\brak{k} z^{-k} X(z) \\
+		\implies H(z) = \frac{Y(z)}{X(z)} &= \frac{\sum _{k=0}^{N}b\brak{k} z^{-k}}{\sum _{m=0}^{M}a\brak{m} z^{-m	}}
+	\end{align}
+	For obtaining the discrete Fourier transform, put $z = \j \frac{2\pi i}{I}$ where $I$ is the length of the input signal and $i = 0, 1, \ldots, I-1$
 Run the following code 
 \begin{lstlisting}
 wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/7/7_1.py
@@ -875,8 +1045,52 @@ Use the following command in the terminal to run the code
 python3 7_1.py
 \end{lstlisting}
 %
-\item Repeat all the exercises in the previous sections for the above $a$ and $b$.
-
+\item Repeat all the exercises in the previous sections for the above $a$ and $b$.\\
+\solution
+The polynomial coefficients obtained are
+	\begin{align}
+		\vec{a} = \myvec{1.000 \\ -2.519 \\ 2.561 \\ -1.206 \\ 0.220} \qquad
+		\vec{b} = \myvec{0.003 \\ 0.014 \\ 0.021 \\ 0.014 \\ 0.003}
+	\end{align}
+	
+	The difference equation is then given by
+	\begin{multline}
+		\vec{a}^\top \vec{y} = \vec{b}^\top \vec{x} \\
+		y(n)-(2.519)y(n-1)+(2.561)y(n-2)\\-(1.206)y(n-3)+(0.220)y(n-4)=
+		(0.003)x(n)\\+(0.014)x(n-1)+(0.021)x(n-2)+(0.014)x(n-3)\\+(0.003)x(n-4)
+	\end{multline}
+	
+	where
+	\begin{align}
+		\vec{y} = \myvec{y(n) \\ y(n-1) \\ y(n-2) \\ y(n-3) \\ y(n-4)} \qquad
+		\vec{x} = \myvec{x(n) \\ x(n-1) \\ x(n-2) \\ x(n-3) \\ x(n-4)}
+	\end{align}
+Run the following code 
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/7/7_2_1.py
+\end{lstlisting}
+Use the following command in the terminal to run the code and generate the figure below
+\begin{lstlisting}
+python3 7_2_1.py
+\end{lstlisting}
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/7/7_2_1.png}
+\caption{$|H(e^{j\omega})|$}
+\end{figure}
+Run the following code 
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/7/7_2_2.py
+\end{lstlisting}
+Use the following command in the terminal to run the code and generate the figure below
+\begin{lstlisting}
+python3 7_2_2.py
+\end{lstlisting}
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/7/7_2_2.png}
+\caption{h(n)}
+\end{figure}
 \item What is the sampling frequency of the input signal?
 \\
 \solution
@@ -888,8 +1102,10 @@ What is type, order and  cutoff-frequency of the above butterworth filter
 The given butterworth filter is low pass with order=4 and cutoff-frequency=4kHz.
 %
 \item
-Modifying the code with different input parameters and to get the best possible output.
+Modifying the code with different input parameters and to get the best possible output.\\
 %
+\solution 
+Order: 10\\
+Cutoff frequency: 3000 Hz
 \end{enumerate}
-
 \end{document}
