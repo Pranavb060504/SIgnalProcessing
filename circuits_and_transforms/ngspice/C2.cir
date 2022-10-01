@@ -1,0 +1,5 @@
+*RC Circuit 2
+V2 v2in Cout 2V
+R1 Cin Cout 1 
+R2 v2in Cin 2
+C1 Cin Cout 1u IC=1.333
