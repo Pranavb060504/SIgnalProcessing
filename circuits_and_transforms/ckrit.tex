@@ -581,26 +581,100 @@ Assume $V_{C}$ be voltage across the capacitor at that time,
 		&=\frac{4}{3}\mathcal{L}^{-1}\left[\frac{1}{s}-\frac{1}{s+\frac{3}{2C}}\right]\\
 		&=\frac{4}{3}[1-e^{-\frac{3}{2C}}]u(t)
 		\end{align}
+		Run the following code 
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/circuits_and_transforms/vt.py
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+python3 vt.py
+\end{lstlisting}
 			\begin{figure}[!ht]
 			\centering
 			\includegraphics[width=\columnwidth]{/home/pranav/Desktop/Signal processing/circuits_and_transforms/vt}
 			\caption{}
 			\label{fig:vt}
 \end{figure}
-	\item Verify your result using ngspice.
+	\item Verify your result using ngspice.\\
+	\solution:
+	Run the following code 
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/circuits_and_transforms/C1.cir
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+ngspice C1.cir
+tran 0.0001ms 0.1ms
+plot (V(Cin)-V(Cout))
+\end{lstlisting}
 \end{enumerate}
 
  \section{Initial Conditions}
 \begin{enumerate}[label=\arabic*.,ref=\thesection.\theenumi]
 \numberwithin{equation}{section}
 \item Find $q_2$ in Fig. 
-			\ref{fig:ckt}.
+			\ref{fig:ckt}.\\
+			\solution: at t=$\infty$,capacitor is fully charged,
+			\begin{align}
+				3i=2\\
+				i=\frac{2}{3} A\\
+				V_{C_0}=2-\frac{4}{3}=\frac{2}{3}V\\
+				q_2=CV=\frac{2}{3} \mu C
+			\end{align}
 \item Draw the equivalent $s$-domain resistive circuit when S is switched to position Q.  Use variables $R_1, R_2, C_0$ for the passive elements.
 	
-		\item $V_{C_0}(s)$ = ?  
-	\item $v_{C_0}(t)$ = ? Plot using python.
-	\item Verify your result using ngspice.
-	\item Find $v_{C_0}(0-), v_{C_0}(0+)$ and  $v_{C_0}(\infty) $. 
+		\item $V_{C_0}(s)$ = ?  \\		
+			\solution:by junction law
+			\begin{align}
+				i_1+i_2+i_3=0\\
+				\frac{V_c}{R_1}+\frac{V_c-\frac{2}{s}}{R_2}+\frac{V_c-\frac{4}{3s}}{\frac{1}{sC_0}}=0\\
+				V_{C}(s)=\frac{\frac{1}{C}+\frac{4s}{3}}{s(s+\frac{3}{2C})}
+			\end{align}
+	\item $v_{C_0}(t)$ = ? Plot using python.\\
+		\solution:
+		Taking laplace inverse on both sides
+		\begin{align}
+			v_{C_0}(t)=\mathcal{L}^{-1}\left[\frac{A}{s}+\frac{B}{s+\frac{3}{2C}}\right]\\
+			A=\frac{2}{3},B=\frac{2}{3}\\
+			\therefore v _{C_0}(t)=\frac{2}{3}(1+e^{\frac{-3}{2C}t})u(t)
+		\end{align}
+					\begin{figure}[!ht]
+			\centering
+			\includegraphics[width=0.7\columnwidth]{/home/pranav/Desktop/Signal processing/circuits_and_transforms/vt2}
+			\caption{}
+			\label{fig:vt2}
+			\end{figure}
+				Run the following code 
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/circuits_and_transforms/vt1.py
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+python3 vt1.py
+\end{lstlisting}
+	\item Verify your result using ngspice.\\
+		\solution:
+	Run the following code 
+\begin{lstlisting}
+wget https://github.com/Pranavb060504/SIgnalProcessing/blob/main/circuits_and_transforms/C2.cir
+\end{lstlisting}
+Use the following command in the terminal to run the code
+\begin{lstlisting}
+ngspice C2.cir
+tran 0.0001ms 0.1ms
+plot (V(Cin)-V(Cout))
+\end{lstlisting}	
+	\item Find $v_{C_0}(0-), v_{C_0}(0+)$ and  $v_{C_0}(\infty)$. \\
+		\solution:
+			for t=$0^{-}$ switch is still at P , so
+			\begin{align}
+				V_{C}(0^{-})=\frac{4}{3}V
+			\end{align}
+			from formula 
+			\begin{align}
+				&V_{C}(0^{+})=\frac{2}{3}(1+1)(1)=\frac{4}{3}\\
+				&V_{C}(\infty)=\frac{2}{3}	
+			\end{align}
 
 
 	\end{enumerate}
