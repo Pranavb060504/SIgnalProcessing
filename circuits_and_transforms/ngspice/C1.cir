@@ -1,1 +1,6 @@
-
+*RC Circuit 1
+V1 v1in Cout 1V
+V2 v2in Cout 2V
+R1 v1in Cin  1
+R2 v2in Cin 2
+C1 Cin Cout 1u
